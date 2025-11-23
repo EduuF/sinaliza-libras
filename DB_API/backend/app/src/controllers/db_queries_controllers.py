@@ -22,7 +22,7 @@ def ep_get_conteudo_trecho(trecho_id: str) -> Dict[str, Any]:
     return {"status": 200, "response": conteudo_trecho}
 
 @db_queries_router.get("/get_trecho_para_traduzir", response_model=Dict[str, Any])
-def ep_get_trecho_para_traduzir(site_id: Optional[str] = None) -> Dict[str, Any]:
+def ep_get_trecho_para_traduzir(site_id: Optional[int] = None) -> Dict[str, Any]:
     """List appointments filtered by patient, dentist or time window."""
     conteudo_trecho: str = get_trecho_para_traduzir(site_id=site_id)
     return {"status": 200, "response": conteudo_trecho}
