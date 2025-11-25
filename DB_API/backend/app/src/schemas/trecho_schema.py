@@ -8,6 +8,7 @@ class TrechoBase(BaseModel):
     """Shared fields for trecho operations."""
 
     trecho_id: Optional[int] = None
+    trecho_hash: Optional[str] = None
     conteudo: str
     site_id: Optional[int] = None
     interprete_id: Optional[int] = None
