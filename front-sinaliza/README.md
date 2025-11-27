@@ -9,4 +9,4 @@ npm run dev
 
 ### Broswer
 
-App will locally @ http://localhost:5173/
+App will run locally @ http://localhost:5173/
