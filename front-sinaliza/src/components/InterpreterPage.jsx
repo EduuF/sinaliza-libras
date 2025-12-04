@@ -126,9 +126,10 @@ const InterpreterPage = () => {
             }
 
             const data = await response.json();
-
+            console.log(response)
+            console.log(data)
             // Verificar se a resposta contém os campos esperados
-            if (data.status === 'success' && Array.isArray(data.response)) {
+            if (data.status ===200 && Array.isArray(data.response)) {
                 if (data.response.length === 0) {
                     setSnackbar({
                         open: true,
@@ -604,7 +605,7 @@ const InterpreterPage = () => {
 
                                                     <Box display="flex" justifyContent="space-between" alignItems="center">
                                                         <Typography variant="body2" color="text.secondary">
-                                                            Snapshot: {trecho.snapshotName}
+                                                            snapshot: {trecho.snapshotName}
                                                         </Typography>
                                                         {selectedTrechoIndex === index && (
                                                             <Button

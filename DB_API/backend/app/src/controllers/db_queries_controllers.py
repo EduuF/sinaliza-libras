@@ -27,14 +27,14 @@ def ep_get_trecho_para_traduzir(site_id: Optional[int] = None, get_all_trechos_f
     conteudo_trecho: str = get_trecho_para_traduzir(site_id=site_id, get_all_trechos_from_site=get_all_trechos_from_site)
     return {"status": 200, "response": conteudo_trecho}
 
-@db_queries_router.get("/registra_video", response_model=Dict[str, Any])
+@db_queries_router.post("/registra_video", response_model=Dict[str, Any])
 def ep_registra_video(interprete_id: int, video_url: str, trecho_id: int) -> Dict[str, Any]:
     """List appointments filtered by patient, dentist or time window."""
     _: str = registra_video(interprete_id = interprete_id, video_url = video_url, trecho_id=trecho_id)
     return {"status": 200}
 
 
-@db_queries_router.get("/registra_site", response_model=Dict[str, Any])
+@db_queries_router.post("/registra_site", response_model=Dict[str, Any])
 def ep_registra_site(site_url: str) -> Dict[str, Any]:
     """List appointments filtered by patient, dentist or time window."""
     #site_id: int = registra_site(site_url = site_url)
@@ -47,7 +47,7 @@ def ep_get_site_id_by_url(site_url: str) -> Dict[str, Any]:
     #site_id: int = get_site_id_by_url(site_url = site_url)
     #return {"status": 200, "site_id": site_id}
 
-@db_queries_router.get("/registra_trecho", response_model=Dict[str, Any])
+@db_queries_router.post("/registra_trecho", response_model=Dict[str, Any])
 def ep_registra_trecho(trecho_conteudo: str, site_url: str, site_id: int) -> Dict[str, Any]:
     """List appointments filtered by patient, dentist or time window."""
     #TODO
