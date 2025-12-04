@@ -80,7 +80,7 @@ class CRUDTrecho:
 
     def _get_dataframe(self) -> Optional[pd.DataFrame]:
         """
-        Método auxiliar para ler a planilha e retornar um DataFrame.
+        Mét odo auxiliar para ler a planilha e retornar um DataFrame.
         Usado para operações que se beneficiam da indexação do Pandas.
         """
         if not self.worksheet:
@@ -182,6 +182,7 @@ class CRUDTrecho:
                     if value == '':
                         # Substitui '' por None
                         d[key] = None
+
 
             # Mapeia a lista de dicionários para uma lista de modelos Pydantic
             trechos_base_list = [TrechoBase(**d) for d in trechos_list_dicts]
