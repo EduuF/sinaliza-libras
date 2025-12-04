@@ -7,10 +7,10 @@ from pydantic import BaseModel
 class TrechoBase(BaseModel):
     """Shared fields for trecho operations."""
 
-    trecho_id: Optional[int] = None
-    trecho_hash: Optional[str] = None
+    trecho_id: Optional[int|float] = None
+    trecho_hash: Optional[str|float] = None
     conteudo: str
-    site_id: Optional[int] = None
-    interprete_id: Optional[int] = None
-    snapshot_name: Optional[str] = None
-    video_url: Optional[int] = None
+    site_id: Optional[int|float] = None
+    interprete_id: Optional[int|float] = None
+    snapshot_name: Optional[str|float] = None
+    video_url: Optional[str|float] = None
