@@ -14,15 +14,10 @@ import {
     TextField,
     Alert,
     Snackbar,
-    Paper,
     CircularProgress,
 } from '@mui/material';
 import {
     ArrowBack as BackIcon,
-    Dashboard as DashboardIcon,
-    People as PeopleIcon,
-    Settings as SettingsIcon,
-    Analytics as AnalyticsIcon,
     AddLink as LinkIcon,
 } from '@mui/icons-material';
 
@@ -66,37 +61,54 @@ const AdminPage = () => {
         setLoading(true);
 
         try {
-            // Simular chamada API - substitua pela sua URL real
-            const response = await fetch('http://localhost:3001/api/links', {
-                method: 'POST',
+            // CHAMADA API
+            const response = await fetch(`http://localhost:8000/db_queries/registra_site?site_url=${encodeURIComponent(url)}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    url: url,
-                    name: `Link ${new Date().toLocaleDateString()}`,
-                    description: 'Link cadastrado via painel administrativo',
-                }),
             });
 
-            // Simulando delay da API
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            if (!response.ok) {
+                throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+            }
 
-            if (response.ok) {
+            const data = await response.json();
+
+            // Verificar se a resposta contém os campos esperados
+            if (data.site_url && data.site_id) {
                 setSnackbar({
                     open: true,
-                    message: 'Link cadastrado com sucesso!',
+                    message: `Site cadastrado com sucesso! ID: ${data.site_id}`,
                     severity: 'success',
                 });
                 setUrl('');
             } else {
-                throw new Error('Erro ao cadastrar link');
+                // Se a resposta não tiver o formato esperado, mas a requisição foi bem-sucedida
+                console.log('Resposta da API:', data);
+                setSnackbar({
+                    open: true,
+                    message: 'Site cadastrado com sucesso!',
+                    severity: 'success',
+                });
+                setUrl('');
             }
+
         } catch (error) {
             console.error('Erro ao cadastrar link:', error);
+
+            // Mensagens de erro específicas
+            let errorMessage = 'Erro ao cadastrar link. Tente novamente.';
+
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Não foi possível conectar ao servidor. Verifique se a API está rodando';
+            } else if (error.message.includes('Erro na API')) {
+                errorMessage = `Erro no servidor: ${error.message}`;
+            }
+
             setSnackbar({
                 open: true,
-                message: 'Erro ao cadastrar link. Tente novamente.',
+                message: errorMessage,
                 severity: 'error',
             });
         } finally {
@@ -138,18 +150,19 @@ const AdminPage = () => {
                                 <Box display="flex" alignItems="center" mb={3}>
                                     <LinkIcon color="primary" sx={{ fontSize: 32, mr: 2 }} />
                                     <Typography variant="h5" component="h2" fontWeight="600">
-                                        Cadastrar Novo Link
+                                        Cadastrar Novo Site
                                     </Typography>
                                 </Box>
 
                                 <Typography variant="body1" color="text.secondary" mb={4}>
-                                    Insira o link da página onde os intérpretes irão buscar informações para tradução.
+                                    Insira o link da página que será disponibilizada para os intérpretes traduzirem.
+                                    O sistema registrará o site na API local (localhost:8000).
                                 </Typography>
 
                                 <Box component="form" onSubmit={handleSubmit}>
                                     <TextField
                                         fullWidth
-                                        label="URL da Página"
+                                        label="URL do Site"
                                         variant="outlined"
                                         value={url}
                                         onChange={(e) => setUrl(e.target.value)}
@@ -175,29 +188,16 @@ const AdminPage = () => {
                                             minWidth: 200,
                                         }}
                                     >
-                                        {loading ? 'Cadastrando...' : 'Cadastrar Link'}
+                                        {loading ? 'Cadastrando...' : 'Cadastrar Site'}
                                     </Button>
                                 </Box>
 
-                                {/* Informações adicionais */}
-                                <Paper variant="outlined" sx={{ p: 3, mt: 4, bgcolor: 'background.default' }}>
-                                    <Typography variant="subtitle2" gutterBottom color="primary">
-                                        💡 Informações importantes:
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        • Certifique-se de que o link é acessível publicamente<br />
-                                        • A página deve conter o conteúdo a ser traduzido<br />
-                                        • Os intérpretes terão acesso a este link<br />
-                                        • Você pode cadastrar múltiplos links
-                                    </Typography>
-                                </Paper>
                             </CardContent>
                         </Card>
                     </Grid>
 
 
                 </Grid>
-
             </Container>
 
             {/* Snackbar para feedback */}
